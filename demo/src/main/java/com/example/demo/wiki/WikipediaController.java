@@ -11,8 +11,8 @@ public class WikipediaController {
     public WikipediaController(WikipediaRepository wikipediaRepository){
         this.wikipediaRepository = wikipediaRepository;
     }
-    @GetMapping("wiki")  //localhost:8080/api/wiki
-    public WikipediaData getWiki(){
-        return wikipediaRepository.findByTitle("William Shakespeare");
+    @GetMapping("wiki")  //localhost:8080/api/wiki?title="William Shakespeare"
+    public WikipediaData getWiki(@RequestParam String title){
+        return wikipediaRepository.findByTitle(title);
     }
 }
