@@ -3,6 +3,8 @@ package com.example.demo.poetry;
 import feign.Feign;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import java.util.List;
 public class PoetryClientImpl implements PoetryClient{
 
     private final PoetryApi poetryApi;
+    private final Logger logger = LoggerFactory.getLogger(PoetryClient.class.getName());
 
     @Autowired
     public PoetryClientImpl(@Value("${poetry.db.api.url}") final String url) {
