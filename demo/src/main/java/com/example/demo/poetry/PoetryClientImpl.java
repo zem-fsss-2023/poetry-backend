@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PoetryClientImpl implements PoetryClient{
 
@@ -23,5 +25,10 @@ public class PoetryClientImpl implements PoetryClient{
     @Override
     public PoetsResponseDto getPoets() {
         return poetryApi.getPoets();
+    }
+
+    @Override
+    public List<PoemResponseDto> getPoems(String poet) {
+        return poetryApi.getPoems(poet);
     }
 }
