@@ -1,17 +1,15 @@
 package com.example.demo.wiki;
-
-
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api")   //localhost:8080/api
+@RequestMapping("api")
 public class WikipediaController {
     private final WikipediaRepository wikipediaRepository;
 
     public WikipediaController(WikipediaRepository wikipediaRepository){
         this.wikipediaRepository = wikipediaRepository;
     }
-    @GetMapping("wiki")  //localhost:8080/api/wiki?title="William Shakespeare"
+    @GetMapping("wiki")
     public WikipediaData getWiki(@RequestParam String title){
         return wikipediaRepository.findByTitle(title);
     }
