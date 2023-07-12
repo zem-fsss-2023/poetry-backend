@@ -6,5 +6,5 @@ import com.example.demo.gpt.dto.GptModelsResponseDto;
 public interface GptClient {
     GptModelsResponseDto getModels();
 
-    String generateNoteText(String command);
+    String generateText(String command);
 }

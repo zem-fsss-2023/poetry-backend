@@ -13,15 +13,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class PoetryClientImpl implements PoetryClient{
 
     private final PoetryApi poetryApi;
-    private final Logger logger = LoggerFactory.getLogger(PoetryClient.class.getName());
-    private final Counter counter;
-    private final Timer timer;
+    private final Logger logger = LoggerFactory.getLogger(PoetryClientImpl.class.getName());
+    private final Counter getPoetsCounter;
+    private final Timer getPoetsTimer;
+
+    private final Counter getPoemsCounter;
+    private final Timer getPoemsTimer;
 
     @Autowired
     public PoetryClientImpl(@Value("${poetry.db.api.url}") final String url, MeterRegistry meterRegistry) {
@@ -29,19 +31,24 @@ public class PoetryClientImpl implements PoetryClient{
                 .decoder(new GsonDecoder())
                 .encoder(new GsonEncoder())
                 .target(PoetryApi.class, url);
-        counter = meterRegistry.counter("getPoetsCounter", "");
-        timer = meterRegistry.timer("getPoetsExcectionTimer", "");
+        this.getPoetsCounter = meterRegistry.counter("getPoetsCounter");
+        this.getPoetsTimer = meterRegistry.timer("getPoetsTimer");
+
+        this.getPoemsCounter = meterRegistry.counter("getPoemsCounter");
+        this.getPoemsTimer = meterRegistry.timer("getPoemsTimer");
     }
 
     @Override
     public PoetsResponseDto getPoets() {
-        counter.increment();
-        PoetsResponseDto response = timer.record(() -> poetryApi.getPoets());
-        return response;
+        logger.info("Retrieving list of available poets.");
+        getPoetsCounter.increment();
+        return getPoetsTimer.record(() -> poetryApi.getPoets());
     }
 
     @Override
     public List<PoemResponseDto> getPoems(String poet) {
-        return poetryApi.getPoems(poet);
+        logger.info(String.format("Retrieving poems written by %s.", poet));
+        getPoemsCounter.increment();
+        return getPoemsTimer.record(() -> poetryApi.getPoems(poet));
     }
 }
