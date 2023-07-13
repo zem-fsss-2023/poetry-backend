@@ -21,4 +21,4 @@ output:
 processors:
   - add_fields:
       fields:
-        app_name: fsss_backend
+        app_name: poetry-backend
