@@ -32,7 +32,7 @@ jobs:
           push: true
           tags: zemregistry.azurecr.io/zemregistry/poetry-backend:${{ github.sha }}
           file: ./Dockerfile
-          context: ./demo/
+          context: ./
 
   deploy:
     runs-on: ubuntu-latest
